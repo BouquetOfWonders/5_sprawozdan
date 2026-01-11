@@ -1,13 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://4k6gb8wlqtun"]
+[gd_scene load_steps=4 format=3 uid="uid://4k6gb8wlqtun"]
 
 [ext_resource type="Script" uid="uid://cmnvgjlv6hrnr" path="res://Skrypty/kamera.gd" id="1_7nput"]
-[ext_resource type="Texture2D" uid="uid://d06hs5ttpcwcj" path="res://assets/PanoramaTemplate.png" id="2_7nput"]
+[ext_resource type="Texture2D" uid="uid://xhye6ek6xh6e" path="res://assets/TestRooms/test.png" id="1_n75w1"]
+[ext_resource type="PackedScene" uid="uid://cdslutwi2uppw" path="res://Sceny/CameraUI.tscn" id="2_n75w1"]
 
 [node name="Node2D" type="Node2D"]
 
+[node name="CameraSprite" type="Sprite2D" parent="."]
+position = Vector2(640, 360)
+texture = ExtResource("1_n75w1")
+
 [node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
 position_smoothing_enabled = true
 script = ExtResource("1_7nput")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_7nput")
+[node name="Control" parent="Camera2D" instance=ExtResource("2_n75w1")]

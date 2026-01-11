@@ -1,0 +1,80 @@
+[gd_scene load_steps=6 format=3 uid="uid://cdslutwi2uppw"]
+
+[ext_resource type="Script" uid="uid://c3qru2bbl1c2a" path="res://Skrypty/CameraUI.gd" id="1_54t7v"]
+[ext_resource type="Theme" uid="uid://3felyhpgyvmb" path="res://assets/Themes/CameraTheme.tres" id="2_kk0q5"]
+[ext_resource type="Material" uid="uid://b4cegue3hsrub" path="res://Skrypty/Resources/CameraShader/CameraShader.tres" id="2_tmoa0"]
+[ext_resource type="ButtonGroup" uid="uid://blagajqnt7k7s" path="res://Skrypty/Resources/CameraUIButtonGroup.tres" id="3_mppmi"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_rbv06"]
+
+[node name="CameraUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_54t7v")
+
+[node name="CameraShader" type="MeshInstance2D" parent="."]
+modulate = Color(1, 1, 1, 0.3137255)
+material = ExtResource("2_tmoa0")
+position = Vector2(640, 360)
+scale = Vector2(1279.9999, 720)
+mesh = SubResource("QuadMesh_rbv06")
+
+[node name="CameraLayout" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 871.0
+offset_top = 332.0
+offset_right = 1261.0
+offset_bottom = 698.0
+
+[node name="Cam 2" type="Button" parent="CameraLayout"]
+layout_mode = 0
+offset_left = 139.0
+offset_right = 234.0
+offset_bottom = 60.0
+theme = ExtResource("2_kk0q5")
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("3_mppmi")
+text = " Cam 2"
+alignment = 0
+
+[node name="Cam 3" type="Button" parent="CameraLayout"]
+layout_mode = 0
+offset_top = 110.0
+offset_right = 90.0
+offset_bottom = 170.0
+theme = ExtResource("2_kk0q5")
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("3_mppmi")
+text = " Cam 3"
+alignment = 0
+
+[node name="Cam 4" type="Button" parent="CameraLayout"]
+layout_mode = 0
+offset_left = 139.0
+offset_top = 110.0
+offset_right = 234.0
+offset_bottom = 170.0
+theme = ExtResource("2_kk0q5")
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("3_mppmi")
+text = " Cam 1"
+alignment = 0
+
+[node name="Cam 1" type="Button" parent="CameraLayout"]
+layout_mode = 0
+offset_right = 95.0
+offset_bottom = 60.0
+theme = ExtResource("2_kk0q5")
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("3_mppmi")
+text = " Cam 1
+"
+alignment = 0

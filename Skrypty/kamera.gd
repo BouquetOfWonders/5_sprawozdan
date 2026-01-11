@@ -1,6 +1,6 @@
 extends Camera2D
 enum {NoCam, Cam}
-var SmoothingType = NoCam
+var Globalvar = GlobalVar
 @onready
 var Kamera = $"."
 var CamPosition := 0.0
@@ -12,7 +12,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if SmoothingType == Cam && abs(Kamera.position.x - CamPosition) > 5:
+	if Globalvar.IsCameraOn == Cam && abs(Kamera.position.x - CamPosition) > 5:
 		Kamera.position_smoothing_enabled = false
 		if Kamera.position.x > CamPosition:
 			Kamera.position.x -= CamSpeed * delta
@@ -24,13 +24,13 @@ func _process(delta: float) -> void:
 func _input(event):
 	if event is InputEventMouseMotion:
 		var TruePosition = clamp(event.position.x, 0, 1280) / 2
-		if SmoothingType == NoCam:
+		if Globalvar.IsCameraOn == NoCam:
 			Kamera.position_smoothing_enabled = true
 			Kamera.position.x = TruePosition - 320
 		else:
 			CamPosition = TruePosition - 320
 	if event.is_action_pressed("CameraTypeChange"):
-		SmoothingType = abs(SmoothingType -1)
+		Globalvar.IsCameraOn = abs(Globalvar.IsCameraOn -1)
 			
 			
 		
