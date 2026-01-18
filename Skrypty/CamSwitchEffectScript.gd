@@ -18,6 +18,3 @@ func _process(_delta: float) -> void:
 
 func set_shader_value(value: float):
 	NoiseTransision.material.set_shader_parameter("noise_intensity", value);
-	
-func SetVisibleToFalse():
-	NoiseTransision.visible = false

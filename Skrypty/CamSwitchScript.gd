@@ -5,6 +5,7 @@ var globalvar = GlobalVar
 var SoundEffect = $"../../../../CamSwitchEffect"
 var rng = RandomNumberGenerator.new()
 
+
 func _ready() -> void:
 	for i in buttongroup.get_buttons():
 		i.connect("pressed",Camchanged)
@@ -16,5 +17,5 @@ func Camchanged():
 	if GlobalVar.IsCameraOn == 1:
 		SoundEffect.pitch_scale = rng.randf_range(0.9, 1.1)
 		SoundEffect.play()
-	
+		
 	

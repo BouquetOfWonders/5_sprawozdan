@@ -1,13 +1,108 @@
-[gd_scene load_steps=10 format=3 uid="uid://4k6gb8wlqtun"]
+[gd_scene load_steps=35 format=3 uid="uid://4k6gb8wlqtun"]
 
 [ext_resource type="Script" uid="uid://cmnvgjlv6hrnr" path="res://Skrypty/kamera.gd" id="1_7nput"]
 [ext_resource type="Texture2D" uid="uid://dp258g2kicjg5" path="res://assets/Rooms/MonitoringRoom/0.png" id="1_tfmsj"]
 [ext_resource type="Script" uid="uid://sq2738oqidv0" path="res://Skrypty/CamSpriteLogic.gd" id="2_jsvki"]
 [ext_resource type="PackedScene" uid="uid://cdslutwi2uppw" path="res://Sceny/CameraUI.tscn" id="2_n75w1"]
+[ext_resource type="Texture2D" uid="uid://cv0f50wg0q5fp" path="res://assets/Rooms/MonitoringRoom/DoorAnimation/1.png" id="3_0sdbn"]
+[ext_resource type="Texture2D" uid="uid://bmt6xeqiwk5i3" path="res://assets/Rooms/MonitoringRoom/DoorAnimation/2.png" id="4_i8swn"]
 [ext_resource type="Material" uid="uid://sd5oi0s087hk" path="res://Skrypty/Resources/NoiseShader/NoiseShader.tres" id="4_mis3r"]
+[ext_resource type="Texture2D" uid="uid://bitdxvext7omv" path="res://assets/Rooms/MonitoringRoom/DoorAnimation/3.png" id="5_g8bd4"]
 [ext_resource type="Script" uid="uid://b8o408qxvjkjv" path="res://Skrypty/CamSwitchEffectScript.gd" id="5_jsvki"]
+[ext_resource type="Texture2D" uid="uid://b51bf23f8vtfu" path="res://assets/Rooms/MonitoringRoom/DoorAnimation/4.png" id="6_3ol7l"]
 [ext_resource type="Material" uid="uid://cclmbqnltvgh1" path="res://Skrypty/Resources/FisheyeShader/FisheyeShader.tres" id="7_dd5ky"]
+[ext_resource type="Texture2D" uid="uid://csjr0uboiomw2" path="res://assets/Rooms/MonitoringRoom/DoorAnimation/5.png" id="7_qstcn"]
 [ext_resource type="AudioStream" uid="uid://cdjdebr3r33po" path="res://assets/SoundEffects/CamSwitch.mp3" id="7_tfmsj"]
+[ext_resource type="Texture2D" uid="uid://p8bo2m0a5dja" path="res://assets/Rooms/MonitoringRoom/DoorAnimation/6.png" id="8_2gjri"]
+[ext_resource type="Texture2D" uid="uid://bvdmxcpeceamu" path="res://assets/Rooms/MonitoringRoom/DoorAnimation/7.png" id="9_s3j7p"]
+[ext_resource type="Texture2D" uid="uid://x5yvghudjivs" path="res://assets/Rooms/MonitoringRoom/DoorAnimation/8.png" id="10_76rj7"]
+[ext_resource type="Texture2D" uid="uid://yen5vfinxedu" path="res://assets/Rooms/MonitoringRoom/DoorAnimation/9.png" id="11_sjlag"]
+[ext_resource type="Texture2D" uid="uid://cjf05746hiidg" path="res://assets/Rooms/MonitoringRoom/DoorAnimation/10.png" id="12_v86xe"]
+[ext_resource type="Texture2D" uid="uid://ci6clp631frnc" path="res://assets/Rooms/MonitoringRoom/DoorAnimation/11.png" id="13_ayltx"]
+[ext_resource type="Script" uid="uid://bg7wxupt5x0ss" path="res://Skrypty/DoorScript.gd" id="14_gfwu5"]
+[ext_resource type="Shader" uid="uid://dmiiyy5yoy1hi" path="res://Skrypty/Resources/NoiseShader/NoiseShader.gdshader" id="15_i8swn"]
+[ext_resource type="BitMap" uid="uid://dyhqn1m1w1t21" path="res://assets/Buttons/MonitorMap.png" id="22_g8bd4"]
+[ext_resource type="Script" uid="uid://mnefcs7uwuj7" path="res://Skrypty/MonitorButton.gd" id="23_3ol7l"]
+[ext_resource type="BitMap" uid="uid://bogctxm2sufrg" path="res://assets/Buttons/DoorButton.png" id="24_2gjri"]
+[ext_resource type="Script" uid="uid://dopku41t088dn" path="res://Skrypty/DoorButton.gd" id="25_s3j7p"]
+[ext_resource type="AudioStream" uid="uid://dn3tspo5qu2fj" path="res://assets/SoundEffects/CamEnter-exit.mp3" id="26_s3j7p"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_odu1o"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_0sdbn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_i8swn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_g8bd4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_3ol7l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_qstcn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_2gjri")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_s3j7p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_76rj7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_sjlag")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_v86xe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_ayltx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_ayltx")
+}],
+"loop": false,
+"name": &"default",
+"speed": 60.0
+}]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g8bd4"]
+shader = ExtResource("15_i8swn")
+shader_parameter/noise_intensity = 0.70000003325
+
+[sub_resource type="GDScript" id="GDScript_76rj7"]
+script/source = "extends Polygon2D
+@onready
+var Root = $\".\"
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta: float) -> void:
+	if GlobalVar.IsCameraOn == 0:
+		Root.visible = true
+	else:
+		Root.visible = false
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i8swn"]
+shader = ExtResource("15_i8swn")
+shader_parameter/noise_intensity = 0.70000003325
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3ol7l"]
+shader = ExtResource("15_i8swn")
+shader_parameter/noise_intensity = 0.70000003325
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qstcn"]
+shader = ExtResource("15_i8swn")
+shader_parameter/noise_intensity = 0.70000003325
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_76rj7"]
+shader = ExtResource("15_i8swn")
+shader_parameter/noise_intensity = 0.050000002375
 
 [sub_resource type="QuadMesh" id="QuadMesh_tfmsj"]
 
@@ -18,7 +113,50 @@ position = Vector2(640, 360)
 texture = ExtResource("1_tfmsj")
 script = ExtResource("2_jsvki")
 
-[node name="NoiseTransision2" type="MeshInstance2D" parent="."]
+[node name="DoorSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(1335, 403)
+sprite_frames = SubResource("SpriteFrames_odu1o")
+script = ExtResource("14_gfwu5")
+
+[node name="ScreenEffects" type="Polygon2D" parent="."]
+material = SubResource("ShaderMaterial_g8bd4")
+polygon = PackedVector2Array(-384, 613, 429, 522, 437, 442, 448, 437, 454, 349, 448, 316, 446, 221, 441, 191, 433.29846, 219.58115, 424, 219, 431, 196, 432, 165, 406, 104, -379, -89)
+script = SubResource("GDScript_76rj7")
+
+[node name="Polygon2D" type="Polygon2D" parent="ScreenEffects"]
+material = SubResource("ShaderMaterial_i8swn")
+polygon = PackedVector2Array(416, 109, 427, 140, 432, 139, 432, 112)
+
+[node name="Polygon2D" type="Polygon2D" parent="ScreenEffects/Polygon2D"]
+material = SubResource("ShaderMaterial_3ol7l")
+polygon = PackedVector2Array(457, 300, 463, 220, 454, 220)
+
+[node name="Polygon2D" type="Polygon2D" parent="ScreenEffects/Polygon2D/Polygon2D"]
+material = SubResource("ShaderMaterial_qstcn")
+polygon = PackedVector2Array(447, 124, 449, 170, 464, 200, 469, 124)
+
+[node name="Polygon2D" type="Polygon2D" parent="ScreenEffects/Polygon2D/Polygon2D/Polygon2D"]
+material = SubResource("ShaderMaterial_76rj7")
+polygon = PackedVector2Array(712, 38, 687, 87, 692, 96, 701, 97, 730, 38)
+
+[node name="Polygon2D" type="Polygon2D" parent="ScreenEffects/Polygon2D/Polygon2D/Polygon2D/Polygon2D"]
+material = SubResource("ShaderMaterial_76rj7")
+polygon = PackedVector2Array(770, -83, 779, -71, 796, -71, 805, -90, 774, -94)
+
+[node name="Polygon2D" type="Polygon2D" parent="ScreenEffects/Polygon2D/Polygon2D/Polygon2D/Polygon2D/Polygon2D"]
+material = SubResource("ShaderMaterial_76rj7")
+polygon = PackedVector2Array(959, 96, 1031, 49, 1041, 50, 1048, 59, 986, 103, 975, 108, 965, 106)
+
+[node name="Polygon2D" type="Polygon2D" parent="ScreenEffects/Polygon2D/Polygon2D/Polygon2D/Polygon2D/Polygon2D/Polygon2D"]
+material = SubResource("ShaderMaterial_76rj7")
+polygon = PackedVector2Array(1197, -59, 1239, -91, 1297, -90, 1211, -46, 1206, -45, 1198, -51)
+
+[node name="BackBufferCopy3" type="BackBufferCopy" parent="."]
+position = Vector2(1646875.4, 259560)
+scale = Vector2(6937957.5, 518400)
+copy_mode = 2
+
+[node name="FisheyeShader" type="MeshInstance2D" parent="."]
 material = ExtResource("7_dd5ky")
 position = Vector2(1646875.4, 620473)
 scale = Vector2(6937957.5, 3674889)
@@ -28,6 +166,22 @@ mesh = SubResource("QuadMesh_tfmsj")
 position = Vector2(1646875.4, 259560)
 scale = Vector2(6937957.5, 518400)
 copy_mode = 2
+
+[node name="MonitorButton" type="TextureButton" parent="."]
+offset_left = -321.0
+offset_top = -71.0
+offset_right = 471.0
+offset_bottom = 611.0
+texture_click_mask = ExtResource("22_g8bd4")
+script = ExtResource("23_3ol7l")
+
+[node name="DoorButton" type="TextureButton" parent="."]
+offset_left = 1272.0
+offset_top = 237.0
+offset_right = 1401.0
+offset_bottom = 593.0
+texture_click_mask = ExtResource("24_2gjri")
+script = ExtResource("25_s3j7p")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
@@ -44,10 +198,18 @@ copy_mode = 2
 
 [node name="NoiseTransision" type="MeshInstance2D" parent="Camera2D"]
 material = ExtResource("4_mis3r")
-position = Vector2(625.00006, 323.5)
-scale = Vector2(2634.0002, 1917)
+position = Vector2(628, 336)
+scale = Vector2(2634.0002, 1917.0001)
 mesh = SubResource("QuadMesh_tfmsj")
 script = ExtResource("5_jsvki")
 
 [node name="CamSwitchEffect" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_tfmsj")
+
+[node name="CamEnterExitEffect" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("26_s3j7p")
+volume_db = -7.0
+
+[connection signal="button_down" from="MonitorButton" to="MonitorButton" method="_on_button_down"]
+[connection signal="button_down" from="DoorButton" to="DoorButton" method="_on_button_down"]
+[connection signal="button_up" from="DoorButton" to="DoorButton" method="_on_button_up"]

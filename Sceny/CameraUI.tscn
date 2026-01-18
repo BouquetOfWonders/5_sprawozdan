@@ -1,13 +1,16 @@
-[gd_scene load_steps=10 format=3 uid="uid://cdslutwi2uppw"]
+[gd_scene load_steps=13 format=3 uid="uid://cdslutwi2uppw"]
 
 [ext_resource type="Script" uid="uid://c3qru2bbl1c2a" path="res://Skrypty/CameraUI.gd" id="1_54t7v"]
 [ext_resource type="Theme" uid="uid://3felyhpgyvmb" path="res://assets/Themes/CameraTheme.tres" id="2_kk0q5"]
 [ext_resource type="Material" uid="uid://b4cegue3hsrub" path="res://Skrypty/Resources/CameraShader/CameraShader.tres" id="2_tmoa0"]
+[ext_resource type="Script" uid="uid://c1gsb0abddgsm" path="res://Skrypty/CameraHotkeys.gd" id="3_k22xd"]
 [ext_resource type="ButtonGroup" uid="uid://blagajqnt7k7s" path="res://Skrypty/Resources/CameraUIButtonGroup.tres" id="3_mppmi"]
 [ext_resource type="Script" uid="uid://bhk55u0lvf31k" path="res://Skrypty/CamSwitchScript.gd" id="3_p2pm2"]
 [ext_resource type="Script" uid="uid://beji275agxa3j" path="res://Skrypty/CamButtonScript.gd" id="5_rbv06"]
 [ext_resource type="Theme" uid="uid://d2c4b4sckw63t" path="res://assets/Themes/VentilationButton.tres" id="7_kp0ay"]
-[ext_resource type="ButtonGroup" uid="uid://dfmtckvupxwop" path="res://Skrypty/Resources/VentsUiButtonGroup.tres" id="8_n1umb"]
+[ext_resource type="Script" uid="uid://bpquk1r348hxn" path="res://Skrypty/TripwireScript.gd" id="10_d28un"]
+[ext_resource type="Texture2D" uid="uid://bss2s0edu2s7b" path="res://assets/Buttons/Cancel.png" id="10_m4su0"]
+[ext_resource type="Script" uid="uid://btbmymi0ejuwv" path="res://Skrypty/VentScript.gd" id="10_vfim5"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_rbv06"]
 
@@ -30,11 +33,12 @@ mesh = SubResource("QuadMesh_rbv06")
 [node name="CamUI" type="Control" parent="."]
 layout_mode = 1
 anchor_right = 0.001
-offset_left = 850.0
-offset_top = 400.0
-offset_right = 849.72
-offset_bottom = 401.0
+offset_left = 875.0
+offset_top = 425.0
+offset_right = 874.72
+offset_bottom = 426.0
 scale = Vector2(0.65, 0.65)
+script = ExtResource("3_k22xd")
 
 [node name="Deco" type="Control" parent="CamUI"]
 anchors_preset = 0
@@ -308,6 +312,7 @@ offset_bottom = 50.00006
 theme = ExtResource("7_kp0ay")
 disabled = true
 action_mode = 0
+button_mask = 0
 
 [node name="2" type="Button" parent="CamUI/Deco"]
 layout_mode = 0
@@ -318,6 +323,7 @@ offset_bottom = 150.00006
 theme = ExtResource("7_kp0ay")
 disabled = true
 action_mode = 0
+button_mask = 0
 
 [node name="3" type="Button" parent="CamUI/Deco"]
 layout_mode = 0
@@ -328,6 +334,7 @@ offset_bottom = 250.00006
 theme = ExtResource("7_kp0ay")
 disabled = true
 action_mode = 0
+button_mask = 0
 
 [node name="4" type="Button" parent="CamUI/Deco"]
 layout_mode = 0
@@ -338,6 +345,7 @@ offset_bottom = 350.00006
 theme = ExtResource("7_kp0ay")
 disabled = true
 action_mode = 0
+button_mask = 0
 
 [node name="5" type="Button" parent="CamUI/Deco"]
 layout_mode = 0
@@ -347,9 +355,8 @@ offset_right = 485.00012
 offset_bottom = 380.00006
 theme = ExtResource("7_kp0ay")
 disabled = true
-toggle_mode = true
 action_mode = 0
-button_group = ExtResource("8_n1umb")
+button_mask = 0
 
 [node name="6" type="Button" parent="CamUI/Deco"]
 layout_mode = 0
@@ -359,9 +366,15 @@ offset_right = 485.00012
 offset_bottom = 320.00006
 theme = ExtResource("7_kp0ay")
 disabled = true
-toggle_mode = true
 action_mode = 0
-button_group = ExtResource("8_n1umb")
+button_mask = 0
+
+[node name="Control" type="Control" parent="CamUI/Deco"]
+anchors_preset = 0
+offset_left = -238.46155
+offset_top = -119.99997
+offset_right = 530.7693
+offset_bottom = 400.00003
 
 [node name="CameraLayout" type="Control" parent="CamUI"]
 anchors_preset = 0
@@ -531,9 +544,8 @@ offset_top = -40.0
 offset_right = -65.0
 offset_bottom = 80.0
 theme = ExtResource("7_kp0ay")
-toggle_mode = true
 action_mode = 0
-button_group = ExtResource("8_n1umb")
+script = ExtResource("10_vfim5")
 
 [node name="2" type="Button" parent="CamUI/VentsLayout"]
 layout_mode = 0
@@ -542,9 +554,8 @@ offset_top = 80.0
 offset_right = -65.0
 offset_bottom = 180.0
 theme = ExtResource("7_kp0ay")
-toggle_mode = true
 action_mode = 0
-button_group = ExtResource("8_n1umb")
+script = ExtResource("10_vfim5")
 
 [node name="3" type="Button" parent="CamUI/VentsLayout"]
 layout_mode = 0
@@ -553,9 +564,8 @@ offset_top = 180.0
 offset_right = -65.0
 offset_bottom = 280.0
 theme = ExtResource("7_kp0ay")
-toggle_mode = true
 action_mode = 0
-button_group = ExtResource("8_n1umb")
+script = ExtResource("10_vfim5")
 
 [node name="4" type="Button" parent="CamUI/VentsLayout"]
 layout_mode = 0
@@ -564,9 +574,8 @@ offset_top = 280.0
 offset_right = -65.0
 offset_bottom = 380.0
 theme = ExtResource("7_kp0ay")
-toggle_mode = true
 action_mode = 0
-button_group = ExtResource("8_n1umb")
+script = ExtResource("10_vfim5")
 
 [node name="5" type="Button" parent="CamUI/VentsLayout"]
 layout_mode = 0
@@ -575,9 +584,8 @@ offset_top = -40.0
 offset_right = 385.0
 offset_bottom = 80.0
 theme = ExtResource("7_kp0ay")
-toggle_mode = true
 action_mode = 0
-button_group = ExtResource("8_n1umb")
+script = ExtResource("10_vfim5")
 
 [node name="6" type="Button" parent="CamUI/VentsLayout"]
 layout_mode = 0
@@ -586,9 +594,8 @@ offset_top = 80.0
 offset_right = 385.0
 offset_bottom = 180.0
 theme = ExtResource("7_kp0ay")
-toggle_mode = true
 action_mode = 0
-button_group = ExtResource("8_n1umb")
+script = ExtResource("10_vfim5")
 
 [node name="7" type="Button" parent="CamUI/VentsLayout"]
 layout_mode = 0
@@ -597,9 +604,8 @@ offset_top = 180.0
 offset_right = 385.0
 offset_bottom = 280.0
 theme = ExtResource("7_kp0ay")
-toggle_mode = true
 action_mode = 0
-button_group = ExtResource("8_n1umb")
+script = ExtResource("10_vfim5")
 
 [node name="8" type="Button" parent="CamUI/VentsLayout"]
 layout_mode = 0
@@ -608,6 +614,26 @@ offset_top = 280.0
 offset_right = 385.0
 offset_bottom = 380.0
 theme = ExtResource("7_kp0ay")
-toggle_mode = true
 action_mode = 0
-button_group = ExtResource("8_n1umb")
+script = ExtResource("10_vfim5")
+
+[node name="Tripwire" type="ColorRect" parent="CamUI/VentsLayout"]
+layout_mode = 0
+offset_left = 335.0
+offset_top = 125.0
+offset_right = 375.0
+offset_bottom = 140.0
+color = Color(1, 0, 0, 1)
+script = ExtResource("10_d28un")
+
+[node name="TextureButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 150.0
+offset_bottom = 150.0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("10_m4su0")
+stretch_mode = 0
+
+[connection signal="button_down" from="TextureButton" to="." method="_on_texture_button_button_down"]
