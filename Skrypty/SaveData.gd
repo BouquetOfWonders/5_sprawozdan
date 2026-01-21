@@ -2,9 +2,12 @@ extends Node
 
 
 const saveLocation = "user://save.save"
-
-var Contents: Dictionary = {
+static var Defaults: Dictionary = {
 	"language": "en",
+	"Master": linear_to_db(1),
+	"Music": linear_to_db(1),
+	"SoundEffects": linear_to_db(1),
+	
 	"currentNight": 0,
 	"isCNunlocked": false,
 	
@@ -16,29 +19,45 @@ var Contents: Dictionary = {
 	
 }
 
+var Contents: Dictionary = {}
+
+func _reset():
+	var file = FileAccess.open(saveLocation, FileAccess.WRITE)
+	file.store_var(Defaults.duplicate())
+	file.close()
+
 func _save():
 	var file = FileAccess.open(saveLocation, FileAccess.WRITE)
 	file.store_var(Contents.duplicate())
 	file.close()
 
 func _load():
-	if FileAccess.file_exists(saveLocation):
-		var file = FileAccess.open(saveLocation, FileAccess.READ)
-		var data = file.get_var()
-		file.close()
+	if not FileAccess.file_exists(saveLocation):
+		_reset()
+	var file = FileAccess.open(saveLocation, FileAccess.READ)
+	var data = file.get_var()
+	file.close()
 		
-		var saveData = data.duplicate()
-		Contents.language = saveData.language
+	Contents = data.duplicate()
 		
-		Contents.currentNight = saveData.currentNight
-		Contents.isCNunlocked = saveData.isCNunlocked
-		
-		Contents.etherCounter = saveData.etherCounter
-		Contents.analougeCounter = saveData.analougeCounter
-		Contents.servoCounter = saveData.servoCounter
-		Contents.randyCounter = saveData.randyCounter
-		Contents.bbgCounter = saveData.bbgCounter
-		
-func _ready() -> void:
+func _fullLoad():
 	_load()
 	TranslationServer.set_locale(Contents.language)
+	var busindex = AudioServer.get_bus_index("Master")
+	AudioServer.set_bus_volume_db(
+		busindex,
+		Contents.Master
+	)
+	busindex = AudioServer.get_bus_index("Music")
+	AudioServer.set_bus_volume_db(
+		busindex,
+		Contents.Music
+	)
+	busindex = AudioServer.get_bus_index("SoundEffects")
+	AudioServer.set_bus_volume_db(
+		busindex,
+		Contents.SoundEffects
+	)
+
+func _ready() -> void:
+	_fullLoad()

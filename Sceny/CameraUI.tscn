@@ -420,7 +420,7 @@ toggle_mode = true
 button_pressed = true
 action_mode = 0
 button_group = ExtResource("3_mppmi")
-text = "  Cam 3"
+text = " Cam 3"
 alignment = 0
 script = ExtResource("5_rbv06")
 

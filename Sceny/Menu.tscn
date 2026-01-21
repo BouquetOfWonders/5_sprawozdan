@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://drft22qmdm2t"]
+[gd_scene load_steps=11 format=3 uid="uid://drft22qmdm2t"]
 
 [ext_resource type="Texture2D" uid="uid://cflxm58inrm1b" path="res://assets/Rooms/Room3/0.png" id="1_6fyux"]
 [ext_resource type="PackedScene" uid="uid://fbikvj31ou62" path="res://Sceny/menu_ui.tscn" id="1_lkdqq"]
@@ -7,7 +7,6 @@
 [ext_resource type="Material" uid="uid://b4cegue3hsrub" path="res://Skrypty/Resources/CameraShader/CameraShader.tres" id="4_stkhx"]
 [ext_resource type="Material" uid="uid://sd5oi0s087hk" path="res://Skrypty/Resources/NoiseShader/NoiseShader.tres" id="5_dwb77"]
 [ext_resource type="Script" uid="uid://otsg78gq0v4i" path="res://Skrypty/MenuNoiseTransision.gd" id="6_neymg"]
-[ext_resource type="Texture2D" uid="uid://ch5xwx8xkyejb" path="res://assets/logotest.png" id="8_3o518"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_vbx7t"]
 
@@ -18,7 +17,7 @@
 [node name="Menu" type="Node2D"]
 
 [node name="CameraSprite" type="Sprite2D" parent="."]
-position = Vector2(460, 360)
+position = Vector2(320, 360)
 texture = ExtResource("1_6fyux")
 script = ExtResource("2_3o518")
 
@@ -57,8 +56,3 @@ mesh = SubResource("QuadMesh_omg15")
 script = ExtResource("6_neymg")
 
 [node name="MenuUI" parent="." instance=ExtResource("1_lkdqq")]
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(975, 293)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("8_3o518")

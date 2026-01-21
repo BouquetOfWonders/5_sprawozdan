@@ -6,6 +6,8 @@ var CamUpdate := false
 
 var MenuCamTransision := false
 
+var CanCameraMove := false
+
 var CurrentCam := 1
 
 var VentDecontamination := false

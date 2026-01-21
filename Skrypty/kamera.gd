@@ -25,7 +25,7 @@ func _process(delta: float) -> void:
 		Kamera.position_smoothing_enabled = true
 
 func _input(event):
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and Globalvar.CanCameraMove:
 		var TruePositionx = clamp(event.position.x, 0, 1280) / 2
 		var TruePositiony = clamp(event.position.y, 0, 720) / 4
 		if Globalvar.IsCameraOn == NoCam:

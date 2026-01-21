@@ -1,8 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://fbikvj31ou62"]
+[gd_scene load_steps=10 format=3 uid="uid://fbikvj31ou62"]
 
 [ext_resource type="Theme" uid="uid://3felyhpgyvmb" path="res://assets/Themes/CameraTheme.tres" id="1_5e8lx"]
 [ext_resource type="Script" uid="uid://rgs8fw7nplwd" path="res://Skrypty/MenuScript.gd" id="1_78v38"]
 [ext_resource type="Script" uid="uid://beji275agxa3j" path="res://Skrypty/CamButtonScript.gd" id="2_78v38"]
+[ext_resource type="Script" uid="uid://030de2uhhgaq" path="res://Skrypty/new_game_button.gd" id="3_fo2r8"]
+[ext_resource type="Texture2D" uid="uid://ch5xwx8xkyejb" path="res://assets/logotest.png" id="4_sr8ff"]
+[ext_resource type="Script" uid="uid://dogjb38xtbky" path="res://Skrypty/ResetButton.gd" id="5_iw7jg"]
+[ext_resource type="Script" uid="uid://comq38ct76o2a" path="res://Sceny/master_volume.gd" id="6_wo1d5"]
+[ext_resource type="AudioStream" uid="uid://cdjdebr3r33po" path="res://assets/SoundEffects/CamSwitch.mp3" id="7_v7tgf"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_fo2r8"]
 
 [node name="MenuUI" type="Control"]
 layout_mode = 3
@@ -13,7 +20,12 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_78v38")
 
-[node name="NewGame" type="Button" parent="."]
+[node name="MainMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="NewGame" type="Button" parent="MainMenu"]
 custom_minimum_size = Vector2(260, 60)
 layout_mode = 0
 offset_left = 20.0
@@ -24,9 +36,9 @@ theme = ExtResource("1_5e8lx")
 action_mode = 0
 text = "MENU_NEW_GAME"
 alignment = 0
-script = ExtResource("2_78v38")
+script = ExtResource("3_fo2r8")
 
-[node name="Continue" type="Button" parent="."]
+[node name="Continue" type="Button" parent="MainMenu"]
 custom_minimum_size = Vector2(260, 60)
 layout_mode = 0
 offset_left = 20.0
@@ -40,7 +52,7 @@ text = "MENU_CONTINUE"
 alignment = 0
 script = ExtResource("2_78v38")
 
-[node name="Options" type="Button" parent="."]
+[node name="Options" type="Button" parent="MainMenu"]
 custom_minimum_size = Vector2(260, 60)
 layout_mode = 0
 offset_left = 20.0
@@ -53,7 +65,7 @@ text = "MENU_OPTIONS"
 alignment = 0
 script = ExtResource("2_78v38")
 
-[node name="ThreatDocumentation" type="Button" parent="."]
+[node name="ThreatDocumentation" type="Button" parent="MainMenu"]
 custom_minimum_size = Vector2(260, 60)
 layout_mode = 0
 offset_left = 20.0
@@ -67,7 +79,7 @@ text = "MENU_THREAT_DOC"
 alignment = 0
 script = ExtResource("2_78v38")
 
-[node name="Exit" type="Button" parent="."]
+[node name="Exit" type="Button" parent="MainMenu"]
 custom_minimum_size = Vector2(260, 60)
 layout_mode = 0
 offset_left = 20.0
@@ -80,8 +92,151 @@ text = "MENU_EXIT"
 alignment = 0
 script = ExtResource("2_78v38")
 
-[connection signal="button_down" from="NewGame" to="." method="_on_new_game_button_down"]
-[connection signal="button_down" from="Continue" to="." method="_on_continue_button_down"]
-[connection signal="button_down" from="Options" to="." method="_on_options_button_down"]
-[connection signal="button_down" from="ThreatDocumentation" to="." method="_on_threat_documentation_button_down"]
-[connection signal="button_down" from="Exit" to="." method="_on_exit_button_down"]
+[node name="NewCNGame" type="Button" parent="MainMenu"]
+visible = false
+custom_minimum_size = Vector2(260, 60)
+layout_mode = 0
+offset_left = 20.0
+offset_top = 240.0
+offset_right = 280.0
+offset_bottom = 300.0
+theme = ExtResource("1_5e8lx")
+action_mode = 0
+text = "MENU_CUSTOM"
+alignment = 0
+script = ExtResource("2_78v38")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1023, 288)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_sr8ff")
+
+[node name="OptionsMenu" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ResetSaveFile" type="Button" parent="OptionsMenu"]
+custom_minimum_size = Vector2(260, 60)
+layout_mode = 0
+offset_left = 20.0
+offset_top = 560.0
+offset_right = 283.0
+offset_bottom = 620.0
+theme = ExtResource("1_5e8lx")
+action_mode = 0
+text = "RESET_SAVE_FILE"
+alignment = 0
+script = ExtResource("5_iw7jg")
+
+[node name="GoBack" type="Button" parent="OptionsMenu"]
+custom_minimum_size = Vector2(260, 60)
+layout_mode = 0
+offset_left = 20.0
+offset_top = 640.0
+offset_right = 280.0
+offset_bottom = 700.0
+theme = ExtResource("1_5e8lx")
+action_mode = 0
+text = "MENU_GO_BACK"
+alignment = 0
+script = ExtResource("2_78v38")
+
+[node name="Language" type="Button" parent="OptionsMenu"]
+custom_minimum_size = Vector2(260, 60)
+layout_mode = 0
+offset_left = 20.0
+offset_top = 480.0
+offset_right = 280.0
+offset_bottom = 540.0
+theme = ExtResource("1_5e8lx")
+action_mode = 0
+text = "MENU_LANGUAGE"
+alignment = 0
+script = ExtResource("2_78v38")
+
+[node name="MasterVolume" type="HScrollBar" parent="OptionsMenu"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 50.0
+offset_right = 282.0
+offset_bottom = 103.0
+theme = ExtResource("1_5e8lx")
+step = 5.0
+value = 50.0
+script = ExtResource("6_wo1d5")
+busname = "Master"
+
+[node name="Label" type="Label" parent="OptionsMenu/MasterVolume"]
+layout_mode = 0
+offset_top = -35.0
+offset_right = 45.0
+theme = ExtResource("1_5e8lx")
+text = "VOLUME_MASTER"
+
+[node name="SFXVolume" type="HScrollBar" parent="OptionsMenu"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 250.0
+offset_right = 282.0
+offset_bottom = 303.0
+theme = ExtResource("1_5e8lx")
+step = 5.0
+value = 50.0
+script = ExtResource("6_wo1d5")
+busname = "SoundEffects"
+
+[node name="Label" type="Label" parent="OptionsMenu/SFXVolume"]
+layout_mode = 0
+offset_top = -35.0
+offset_right = 45.0
+theme = ExtResource("1_5e8lx")
+text = "VOLUME_SFX"
+
+[node name="MusicVolume" type="HScrollBar" parent="OptionsMenu"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 150.0
+offset_right = 282.0
+offset_bottom = 203.0
+theme = ExtResource("1_5e8lx")
+step = 5.0
+value = 50.0
+script = ExtResource("6_wo1d5")
+busname = "Music"
+
+[node name="Label" type="Label" parent="OptionsMenu/MusicVolume"]
+layout_mode = 0
+offset_top = -35.0
+offset_right = 45.0
+theme = ExtResource("1_5e8lx")
+text = "VOLUME_MUSIC"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_v7tgf")
+bus = &"SoundEffects"
+
+[node name="BlackScreen" type="MeshInstance2D" parent="."]
+visible = false
+modulate = Color(0.07683582, 0.07683582, 0.07683582, 1)
+self_modulate = Color(1, 1, 1, 0)
+position = Vector2(640, 360)
+scale = Vector2(1280, 720)
+mesh = SubResource("QuadMesh_fo2r8")
+
+[node name="Control" type="Control" parent="BlackScreen"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -0.5
+offset_top = -0.5
+offset_right = 0.5
+offset_bottom = 0.5
+
+[connection signal="button_down" from="MainMenu/Continue" to="." method="_on_continue_button_down"]
+[connection signal="button_down" from="MainMenu/Options" to="." method="_on_options_button_down"]
+[connection signal="button_down" from="MainMenu/ThreatDocumentation" to="." method="_on_threat_documentation_button_down"]
+[connection signal="button_down" from="MainMenu/Exit" to="." method="_on_exit_button_down"]
+[connection signal="button_down" from="MainMenu/NewCNGame" to="." method="_on_new_cn_game_button_down"]
+[connection signal="button_down" from="OptionsMenu/GoBack" to="." method="_on_go_back_button_down"]
+[connection signal="pressed" from="OptionsMenu/Language" to="." method="_on_language_pressed"]
