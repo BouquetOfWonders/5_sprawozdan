@@ -27,7 +27,7 @@ var BBGTimer := 0.0
 
 var ServoVentID := 0
 
-var EtherTimer: float = 60 + rng.randf_range(0, 20) - GlobalVar.EtherAi
+var EtherTimer: float = 80 - GlobalVar.EtherAi
 var EtherMaxTimer := EtherTimer
 var EtherOtherTimer := 0.0
 # Since Ether moves in a straight line not much logic is needed besides values from 0 to 5
@@ -42,7 +42,10 @@ var ServoTimer := 8.0
 var ServoPosition := Vector2i(0, 5)
 var RandyTimer := 8.5
 # X for room, Y for Room, Z for Corridor/Vent
-var RandyPosition := Vector3i(2, 1, 0)
+var RandyPosition := Vector3i(1, 1, 0)
+var RandyCooldown := 0
+var RandyVentID := -1
+var RandyCorridorID := 4
 
 var DayTimer := 0.0
 var MaxDayTimer := 480.0
@@ -74,7 +77,8 @@ func _process(delta: float) -> void:
 		
 		if GlobalVar.ServoAI != 0:
 			Servoprocessing()
-		Randyprocessing()
+		if GlobalVar.RandyAI != 0:
+			Randyprocessing()
 		CameraUpdater()
 		if GlobalVar.VentDecontamination:
 			GlobalVar.VentDecontamination = false
@@ -190,8 +194,7 @@ func Servoprocessing():
 				ServoPosition.x = abs(ServoPosition.x - 1)
 			if ServoPosition.y != 5:
 				Vents.pick_random().play()
-			print(ServoPosition)
-			print(ServoVentID)
+
 			
 	if ServoVentID == GlobalVar.TripwireID:
 		TripwireSFX.play()
@@ -203,8 +206,105 @@ func Servoprocessing():
 		ServoVentID = -1
 
 func Randyprocessing():
-	pass
+	var DidJustSwitch = false
+	if GlobalVar.VentDecontamination and RandyVentID == GlobalVar.VentDecontID:
+		RandyPosition = Vector3i(2, rng.randi_range(0,1), 0)
+		RandyTimer = 8.5
+		IsDeconSuccess = true
+		DidJustSwitch = true
+		RandyCorridorID = 3 + RandyPosition.x
+		RandyVentID = -1
+		print(RandyPosition)
+	if RandyTimer < 0 or RandyVentID == GlobalVar.TripwireID:
+		if RandyVentID == GlobalVar.TripwireID:
+			TripwireSFX.play()
+			GlobalVar.TripwireID = -9
+		RandyTimer = 8.5
+		if GlobalVar.RandyAI >= rng.randi_range(0, 20):
+			if RandyCooldown != 0:
+				RandyCooldown -= 1
+			elif 50 >= rng.randi_range(0, 100) and RandyPosition != Vector3i(0, 2, 0) and RandyPosition != Vector3i(-1, 1, 1):
+				RandyCooldown = 2
+				RandyPosition.z = abs(RandyPosition.z - 1)
+				DidJustSwitch = true
+				Vents.pick_random().play()
+			if RandyPosition.z == 1 and not DidJustSwitch:
+				if (30 + GlobalVar.RandyAI) >= rng.randi_range(0, 100):
+					if RandyPosition != Vector3i(-1, 1, 1):
+						Vents.pick_random().play()
+						if RandyPosition.x != -1:
+							RandyPosition.x -= 1
+						else:
+							RandyPosition.y = 1
+					else:
+						JumpscareHandler(4)
+				elif RandyPosition != Vector3i(-1, 1, 1):
+					RandyPosition.y = abs(RandyPosition.y - 1)
+					Vents.pick_random().play()
+			elif not DidJustSwitch:
+				if (40 + GlobalVar.RandyAI) >= rng.randi_range(0, 100):
+					if RandyPosition.x == -1:
+						RandyPosition.x = 0
+					elif RandyPosition.x > 0:
+						RandyPosition.x -= 1
+					elif RandyPosition.y != 2:
+						RandyPosition.y += 1
+					elif not GlobalVar.IsDoorClosed:
+						JumpscareHandler(4)
+					else:
+						RandyPosition = Vector3i(2, rng.randi_range(0,1), 0)
+						$"../DoorButton/DoorPitchedDown".play(0.18)
+						
+				else:
+					RandyPosition.y = abs(RandyPosition.y - 1)
+		print(RandyPosition)
 
+
+	if RandyPosition.z == 1:
+		RandyVentID = -1
+	else:
+		RandyCorridorID = -1
+
+	match RandyPosition:
+		Vector3i(2, 0, 0):
+			RandyCorridorID = 3
+		Vector3i(2, 1, 0):
+			RandyCorridorID = 4
+		Vector3i(1, 0, 0):
+			RandyCorridorID = 5
+		Vector3i(1, 1, 0):
+			RandyCorridorID = 6
+		Vector3i(0, 0, 0):
+			RandyCorridorID = 7
+		Vector3i(0, 1, 0):
+			RandyCorridorID = 8
+		Vector3i(0, 2, 0):
+			RandyCorridorID = 9
+		Vector3i(-1, 0, 0):
+			RandyCorridorID = 10
+		Vector3i(-1, 1, 0):
+			RandyCorridorID = 11
+		Vector3i(2, 0, 1):
+			RandyVentID = 1
+		Vector3i(2, 1, 1):
+			RandyVentID = 5
+		Vector3i(1, 0, 1):
+			RandyVentID = 2
+		Vector3i(1, 1, 1):
+			RandyVentID = 6
+		Vector3i(0, 0, 1):
+			RandyVentID = 3
+		Vector3i(0, 1, 1):
+			RandyVentID = 7
+		Vector3i(-1, 0, 1):
+			RandyVentID = 4
+		Vector3i(-1, 1, 1):
+			RandyVentID = 8
+
+	if GlobalVar.TripwireID == RandyVentID:
+			TripwireSFX.play()
+			GlobalVar.TripwireID = -9
+	
 
 func CameraUpdater():
 	
@@ -220,7 +320,6 @@ func CameraUpdater():
 	GlobalVar.Room11State = 0
 	
 	if GlobalVar.AnalougeAI != 0:
-		GlobalVar.Room11State = 0
 		match AnalougePosition:
 			Vector2i(0, 2):
 				GlobalVar.Room3State = 1
@@ -236,26 +335,59 @@ func CameraUpdater():
 				GlobalVar.Room8State = 1
 			Vector2i(2, 0):
 				GlobalVar.Room9State = 1
-		match AnalougePreviousPosition:
-			Vector2i(0, 2):
-				GlobalVar.Room3State = 0
-			Vector2i(1, 2):
-				GlobalVar.Room4State = 0
-			Vector2i(0, 1):
-				GlobalVar.Room5State = 0
-			Vector2i(1, 1):
-				GlobalVar.Room6State = 0
-			Vector2i(0, 0):
-				GlobalVar.Room7State = 0
-			Vector2i(1, 0):
-				GlobalVar.Room8State = 0
-			Vector2i(2, 0):
-				GlobalVar.Room9State = 0
 	if GlobalVar.ServoAI != 0:
 		if ServoPosition.y == 5:
 			GlobalVar.Room1State = 1
 		else:
 			GlobalVar.Room1State = 0
+	if GlobalVar.RandyAI != 0:
+		if RandyVentID == -1:
+			match RandyCorridorID:
+				3:
+					if GlobalVar.Room3State == 1:
+						GlobalVar.Room3State = 3
+					else:
+						GlobalVar.Room3State = 2
+				4:
+					if GlobalVar.Room4State == 1:
+						GlobalVar.Room4State = 3
+					else:
+						GlobalVar.Room4State = 2
+				5:
+					if GlobalVar.Room5State == 1:
+						GlobalVar.Room5State = 3
+					else:
+						GlobalVar.Room5State = 2
+				6:
+					if GlobalVar.Room6State == 1:
+						GlobalVar.Room6State = 3
+					else:
+						GlobalVar.Room6State = 2
+				7:
+					if GlobalVar.Room7State == 1:
+						GlobalVar.Room7State = 3
+					else:
+						GlobalVar.Room7State = 2
+				8:
+					if GlobalVar.Room8State == 1:
+						GlobalVar.Room8State = 3
+					else:
+						GlobalVar.Room8State = 2
+				9:
+					if GlobalVar.Room9State == 1:
+						GlobalVar.Room9State = 3
+					else:
+						GlobalVar.Room9State = 2
+				10:
+					if GlobalVar.Room10State == 1:
+						GlobalVar.Room10State = 3
+					else:
+						GlobalVar.Room10State = 2
+				11:
+					if GlobalVar.Room11State == 1:
+						GlobalVar.Room11State = 3
+					else:
+						GlobalVar.Room11State = 2
 	updateAllCams()
 
 func JumpscareHandler(WhichAnimatronic: int):

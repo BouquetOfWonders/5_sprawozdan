@@ -18,10 +18,10 @@ var VentDecontID := 0
 var DeconTimeout := false
 var TripwireID := -9
 
-var RandyAI := 0
-var ServoAI := 10
-var AnalougeAI := 10
-var EtherAi := 10
+var RandyAI := 20
+var ServoAI := 0
+var AnalougeAI := 0
+var EtherAi := 0
 var BbgAI := 0
 
 var DayMultiplier := 1.0
