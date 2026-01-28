@@ -1,5 +1,7 @@
 extends Node
 
+signal DayFinished 
+
 var rng = RandomNumberGenerator.new()
 @onready
 var Vents: Array = [
@@ -53,6 +55,10 @@ var MaxDayTimer := 480.0
 var DayStarted := false
 
 func _process(delta: float) -> void:
+	if MaxDayTimer < DayTimer:
+		DayStarted = false
+		EndOfDayProcessing()
+		DayTimer = 0
 	if DayStarted:
 		
 		BBGTimer -= delta
@@ -433,3 +439,6 @@ func updateCam(Which: int, Value: int):
 		RoomStates[Which] = Value
 		if GlobalVar.CurrentCam == Which and GlobalVar.IsCameraOn == GlobalVar.Cam:
 						GlobalVar.CamUpdate = true
+
+func EndOfDayProcessing():
+	DayFinished.emit()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://4k6gb8wlqtun"]
+[gd_scene load_steps=51 format=3 uid="uid://4k6gb8wlqtun"]
 
 [ext_resource type="Script" uid="uid://cmnvgjlv6hrnr" path="res://Skrypty/kamera.gd" id="1_7nput"]
 [ext_resource type="Texture2D" uid="uid://dp258g2kicjg5" path="res://assets/Rooms/MonitoringRoom/0.png" id="1_tfmsj"]
@@ -29,6 +29,7 @@
 [ext_resource type="AudioStream" uid="uid://dn3tspo5qu2fj" path="res://assets/SoundEffects/CamEnter-exit.mp3" id="26_s3j7p"]
 [ext_resource type="Theme" uid="uid://3felyhpgyvmb" path="res://assets/Themes/CameraTheme.tres" id="27_76rj7"]
 [ext_resource type="Script" uid="uid://dg8wekegenexx" path="res://Skrypty/black_screen.gd" id="27_sjlag"]
+[ext_resource type="AudioStream" uid="uid://ddoms8rjd7hll" path="res://assets/SoundEffects/Westminister Chimes.mp3" id="29_o1uf2"]
 [ext_resource type="Script" uid="uid://bbymys3klsmxb" path="res://Skrypty/ai_managerScript.gd" id="29_v86xe"]
 [ext_resource type="AudioStream" uid="uid://cxpd8qfnl1rpi" path="res://assets/SoundEffects/VentSFX/Vent1.mp3" id="31_3v4s6"]
 [ext_resource type="AudioStream" uid="uid://bjwx3x7wwp6mt" path="res://assets/SoundEffects/VentSFX/Vent2.mp3" id="32_kf65n"]
@@ -265,6 +266,10 @@ offset_top = -0.5
 offset_right = 0.5
 offset_bottom = 0.5
 
+[node name="WestministerChimes" type="AudioStreamPlayer" parent="BlackScreen"]
+stream = ExtResource("29_o1uf2")
+bus = &"SoundEffects"
+
 [node name="Label" type="Label" parent="."]
 offset_top = 300.0
 offset_right = 1280.0
@@ -331,3 +336,4 @@ offset_bottom = 720.0
 [connection signal="button_down" from="DoorButton" to="DoorButton" method="_on_button_down"]
 [connection signal="button_up" from="DoorButton" to="DoorButton" method="_on_button_up"]
 [connection signal="SetupReady" from="BlackScreen" to="AI manager" method="_on_black_screen_setup_ready"]
+[connection signal="DayFinished" from="AI manager" to="BlackScreen" method="_on_ai_manager_day_finished"]

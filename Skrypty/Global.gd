@@ -13,18 +13,20 @@ var CurrentCam := 3
 
 var IsModemOn := true
 
+var IsStoryMode := false
+
 var VentDecontamination := false
 var VentDecontID := 0
 var DeconTimeout := false
 var TripwireID := -9
 
-var RandyAI := 20
+var RandyAI := 0
 var ServoAI := 0
 var AnalougeAI := 0
 var EtherAi := 0
 var BbgAI := 0
 
-var DayMultiplier := 1.0
+var DayMultiplier := 1
 var IsEndless := false
 
 var IsDoorClosed := false

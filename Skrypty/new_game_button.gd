@@ -27,6 +27,7 @@ func _process(delta: float) -> void:
 		else:
 			SaveData.Contents.currentNight = 0
 			SaveData._save()
+			GlobalVar.IsStoryMode = true
 			$"../../BlackScreen".visible = true
 			IsLoading = true
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
