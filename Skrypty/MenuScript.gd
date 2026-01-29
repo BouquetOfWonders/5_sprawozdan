@@ -42,6 +42,7 @@ func _on_exit_button_down() -> void:
 func _on_go_back_button_down() -> void:
 	$MainMenu.visible = true
 	$OptionsMenu.visible = false
+	$CustomNightMenu.visible = false
 	Audio.play()
 
 
@@ -59,3 +60,4 @@ func _on_language_pressed() -> void:
 
 func _on_new_cn_game_button_down() -> void:
 	Audio.play()
+	GlobalVar.IsStoryMode = false

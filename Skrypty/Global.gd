@@ -26,7 +26,7 @@ var AnalougeAI := 0
 var EtherAi := 0
 var BbgAI := 0
 
-var DayMultiplier := 1
+var DayMultiplier := 1.0
 var IsEndless := false
 
 var IsDoorClosed := false

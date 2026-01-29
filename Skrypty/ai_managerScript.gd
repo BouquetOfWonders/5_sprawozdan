@@ -12,6 +12,9 @@ var Vents: Array = [
 	$SFX/Vent5,
 	$SFX/Vent6
 ]
+@onready
+var Timelabel = $"../Camera2D/TimeLabel"
+
 
 var IsDeconSuccess := false
 
@@ -29,6 +32,8 @@ var BBGTimer := 0.0
 
 var ServoVentID := 0
 
+var DoorTimer := 0.0
+
 var EtherTimer: float = 80 - GlobalVar.EtherAi
 var EtherMaxTimer := EtherTimer
 var EtherOtherTimer := 0.0
@@ -43,14 +48,18 @@ var ServoTimer := 8.0
 # X for room, Y for Floor
 var ServoPosition := Vector2i(0, 5)
 var RandyTimer := 8.5
-# X for room, Y for Room, Z for Corridor/Vent
-var RandyPosition := Vector3i(1, 1, 0)
+# X for Floor, Y for Room, Z for Corridor/Vent
+var RandyPosition := Vector3i(2, 1, 0)
 var RandyCooldown := 0
 var RandyVentID := -1
 var RandyCorridorID := 4
 
 var DayTimer := 0.0
 var MaxDayTimer := 480.0
+var IsDwukropek := true
+var TimerLabelContents := "23:30"
+var LastTimerState := 480
+var TimerTimer := 1.0
 
 var DayStarted := false
 
@@ -61,8 +70,20 @@ func _process(delta: float) -> void:
 		DayTimer = 0
 	if DayStarted:
 		
+		if GlobalVar.IsDoorClosed:
+			DoorTimer += delta
+		elif DoorTimer > 0:
+			DoorTimer -= delta * 5
+		elif DoorTimer < 0:
+			DoorTimer = 0
+		
 		BBGTimer -= delta
-		EtherTimer -= delta
+		
+		if EtherPosition == 0 and DoorTimer < 1.5 and GlobalVar.IsDoorClosed:
+			EtherTimer -= delta / 5
+		else:
+			EtherTimer -= delta
+		
 		AnalougeTimer -= delta
 		ServoTimer -= delta
 		RandyTimer -= delta
@@ -76,6 +97,8 @@ func _process(delta: float) -> void:
 			pass
 		else:
 			DayTimer += delta
+			TimerTimer -= delta
+			ClockProcessing()
 		BBGprocessing()
 		
 		if GlobalVar.AnalougeAI != 0:
@@ -220,7 +243,6 @@ func Randyprocessing():
 		DidJustSwitch = true
 		RandyCorridorID = 3 + RandyPosition.x
 		RandyVentID = -1
-		print(RandyPosition)
 	if RandyTimer < 0 or RandyVentID == GlobalVar.TripwireID:
 		if RandyVentID == GlobalVar.TripwireID:
 			TripwireSFX.play()
@@ -263,7 +285,6 @@ func Randyprocessing():
 						
 				else:
 					RandyPosition.y = abs(RandyPosition.y - 1)
-		print(RandyPosition)
 
 
 	if RandyPosition.z == 1:
@@ -442,3 +463,42 @@ func updateCam(Which: int, Value: int):
 
 func EndOfDayProcessing():
 	DayFinished.emit()
+
+func ClockProcessing():
+	var MinutesToAdd = floor(480 * (DayTimer / MaxDayTimer))
+	if TimerTimer <= 0:
+		TimerTimer = 1
+		IsDwukropek = not IsDwukropek
+		if IsDwukropek:
+			Timelabel.text = Timelabel.text.replace(" ", ":")
+		else:
+			Timelabel.text = Timelabel.text.replace(":", " ")
+	if MinutesToAdd != LastTimerState:
+		LastTimerState = MinutesToAdd
+		var Hours: int = floor((MinutesToAdd + 30) / 60)
+		var Minutes: int = floor(fmod((MinutesToAdd + 30), 60))
+		var StringNeeded
+		if Hours == 0:
+			if Minutes >= 10:
+				if IsDwukropek:
+					StringNeeded = "23:" + str(Minutes)
+				else:
+					StringNeeded = "23 " + str(Minutes)
+			else:
+				if IsDwukropek:
+					StringNeeded = "23:0" + str(Minutes)
+				else:
+					StringNeeded = "23 0" + str(Minutes)
+		else:
+			Hours -= 1
+			if Minutes >= 10:
+				if IsDwukropek:
+					StringNeeded = str(Hours) + ":" + str(Minutes)
+				else:
+					StringNeeded = str(Hours) + " " + str(Minutes)
+			else:
+				if IsDwukropek:
+					StringNeeded = str(Hours) + ":0" + str(Minutes)
+				else:
+					StringNeeded = str(Hours) + " 0" + str(Minutes)
+		Timelabel.text = StringNeeded
