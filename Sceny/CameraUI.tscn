@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cdslutwi2uppw"]
+[gd_scene load_steps=24 format=3 uid="uid://cdslutwi2uppw"]
 
 [ext_resource type="Script" uid="uid://c3qru2bbl1c2a" path="res://Skrypty/CameraUI.gd" id="1_54t7v"]
 [ext_resource type="Theme" uid="uid://3felyhpgyvmb" path="res://assets/Themes/CameraTheme.tres" id="2_kk0q5"]
@@ -9,6 +9,7 @@
 [ext_resource type="Theme" uid="uid://d2c4b4sckw63t" path="res://assets/Themes/VentilationButton.tres" id="7_kp0ay"]
 [ext_resource type="Script" uid="uid://bpquk1r348hxn" path="res://Skrypty/TripwireScript.gd" id="10_d28un"]
 [ext_resource type="Texture2D" uid="uid://bss2s0edu2s7b" path="res://assets/Buttons/Cancel.png" id="10_m4su0"]
+[ext_resource type="AudioStream" uid="uid://d3ldmv2aod4ou" path="res://assets/SoundEffects/tripwireputdown.mp3" id="10_qvynl"]
 [ext_resource type="Script" uid="uid://btbmymi0ejuwv" path="res://Skrypty/VentScript.gd" id="10_vfim5"]
 [ext_resource type="FontFile" uid="uid://b3aearp07mq5p" path="res://assets/Fonts/Tiny5-Regular.ttf" id="12_qvynl"]
 [ext_resource type="Script" uid="uid://uiutuodan8qu" path="res://Skrypty/ModemControl.gd" id="13_o6rxp"]
@@ -742,6 +743,10 @@ offset_right = 375.0
 offset_bottom = 140.0
 color = Color(1, 0, 0, 1)
 script = ExtResource("10_d28un")
+
+[node name="Tripwireputdown" type="AudioStreamPlayer" parent="CamUI/VentsLayout"]
+stream = ExtResource("10_qvynl")
+bus = &"SoundEffects"
 
 [node name="TextureButton" type="TextureButton" parent="."]
 layout_mode = 0

@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://dogjb38xtbky" path="res://Skrypty/ResetButton.gd" id="5_iw7jg"]
 [ext_resource type="Script" uid="uid://bemvuk5ltgme2" path="res://Skrypty/master_volume.gd" id="6_wo1d5"]
 [ext_resource type="AudioStream" uid="uid://cdjdebr3r33po" path="res://assets/SoundEffects/CamSwitch.mp3" id="7_v7tgf"]
-[ext_resource type="Texture2D" path="res://assets/ProductLogoTransparent.png" id="9_4u21q"]
+[ext_resource type="Texture2D" uid="uid://dh7es6nnc45or" path="res://assets/ProductLogoTransparent.png" id="9_4u21q"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_fo2r8"]
 
@@ -22,6 +22,7 @@ grow_vertical = 2
 script = ExtResource("1_78v38")
 
 [node name="MainMenu" type="Control" parent="."]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -107,33 +108,33 @@ text = "MENU_CUSTOM"
 alignment = 0
 script = ExtResource("2_78v38")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Logo" type="Sprite2D" parent="."]
 position = Vector2(996, 259)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("5_4u21q")
 
-[node name="ColorRect" type="ColorRect" parent="Sprite2D"]
+[node name="ColorRect" type="ColorRect" parent="Logo"]
 offset_left = -325.0
 offset_top = -250.0
 offset_right = -315.0
 offset_bottom = 250.0
 color = Color(0.8, 0.8, 0.8, 1)
 
-[node name="ColorRect2" type="ColorRect" parent="Sprite2D"]
+[node name="ColorRect2" type="ColorRect" parent="Logo"]
 offset_left = 315.0
 offset_top = -250.0
 offset_right = 325.0
 offset_bottom = 250.0
 color = Color(0.8, 0.8, 0.8, 1)
 
-[node name="ColorRect3" type="ColorRect" parent="Sprite2D"]
+[node name="ColorRect3" type="ColorRect" parent="Logo"]
 offset_left = -325.0
 offset_top = -250.0
 offset_right = 325.0
 offset_bottom = -240.0
 color = Color(0.8, 0.8, 0.8, 1)
 
-[node name="ColorRect4" type="ColorRect" parent="Sprite2D"]
+[node name="ColorRect4" type="ColorRect" parent="Logo"]
 offset_left = -325.0
 offset_top = 250.0
 offset_right = 325.0
@@ -275,6 +276,81 @@ offset_top = -0.5
 offset_right = 0.5
 offset_bottom = 0.5
 
+[node name="CustomNightMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="GoBack" type="Button" parent="CustomNightMenu"]
+custom_minimum_size = Vector2(260, 60)
+layout_mode = 0
+offset_left = 20.0
+offset_top = 640.0
+offset_right = 280.0
+offset_bottom = 700.0
+theme = ExtResource("1_5e8lx")
+action_mode = 0
+text = "MENU_GO_BACK"
+alignment = 0
+script = ExtResource("2_78v38")
+
+[node name="BBGLevel" type="SpinBox" parent="CustomNightMenu"]
+layout_mode = 0
+offset_left = 175.0
+offset_top = 500.0
+offset_right = 325.0
+offset_bottom = 555.0
+theme = ExtResource("1_5e8lx")
+max_value = 50.0
+
+[node name="EtherLevel" type="SpinBox" parent="CustomNightMenu"]
+layout_mode = 0
+offset_left = 375.0
+offset_top = 500.0
+offset_right = 525.0
+offset_bottom = 555.0
+theme = ExtResource("1_5e8lx")
+max_value = 50.0
+
+[node name="AnalougeLevel" type="SpinBox" parent="CustomNightMenu"]
+layout_mode = 0
+offset_left = 575.0
+offset_top = 500.0
+offset_right = 725.0
+offset_bottom = 555.0
+theme = ExtResource("1_5e8lx")
+max_value = 50.0
+
+[node name="ServoLevel" type="SpinBox" parent="CustomNightMenu"]
+layout_mode = 0
+offset_left = 775.0
+offset_top = 500.0
+offset_right = 925.0
+offset_bottom = 555.0
+theme = ExtResource("1_5e8lx")
+max_value = 50.0
+
+[node name="RandyLevel" type="SpinBox" parent="CustomNightMenu"]
+layout_mode = 0
+offset_left = 975.0
+offset_top = 500.0
+offset_right = 1125.0
+offset_bottom = 555.0
+theme = ExtResource("1_5e8lx")
+max_value = 50.0
+
+[node name="Start" type="Button" parent="CustomNightMenu"]
+custom_minimum_size = Vector2(260, 60)
+layout_mode = 0
+offset_left = 510.0
+offset_top = 600.0
+offset_right = 770.0
+offset_bottom = 660.0
+theme = ExtResource("1_5e8lx")
+action_mode = 0
+text = "MENU_START"
+script = ExtResource("2_78v38")
+
 [connection signal="button_down" from="MainMenu/Continue" to="." method="_on_continue_button_down"]
 [connection signal="button_down" from="MainMenu/Options" to="." method="_on_options_button_down"]
 [connection signal="button_down" from="MainMenu/ThreatDocumentation" to="." method="_on_threat_documentation_button_down"]
@@ -282,3 +358,5 @@ offset_bottom = 0.5
 [connection signal="button_down" from="MainMenu/NewCNGame" to="." method="_on_new_cn_game_button_down"]
 [connection signal="button_down" from="OptionsMenu/GoBack" to="." method="_on_go_back_button_down"]
 [connection signal="pressed" from="OptionsMenu/Language" to="." method="_on_language_pressed"]
+[connection signal="button_down" from="CustomNightMenu/GoBack" to="." method="_on_go_back_button_down"]
+[connection signal="button_down" from="CustomNightMenu/Start" to="." method="_on_start_button_down"]

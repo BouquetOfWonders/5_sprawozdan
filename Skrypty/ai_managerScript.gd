@@ -12,6 +12,9 @@ var Vents: Array = [
 	$SFX/Vent5,
 	$SFX/Vent6
 ]
+@onready
+var Timelabel = $"../Camera2D/TimeLabel"
+
 
 var IsDeconSuccess := false
 
@@ -29,6 +32,8 @@ var BBGTimer := 0.0
 
 var ServoVentID := 0
 
+var DoorTimer := 0.0
+
 var EtherTimer: float = 80 - GlobalVar.EtherAi
 var EtherMaxTimer := EtherTimer
 var EtherOtherTimer := 0.0
@@ -43,26 +48,48 @@ var ServoTimer := 8.0
 # X for room, Y for Floor
 var ServoPosition := Vector2i(0, 5)
 var RandyTimer := 8.5
-# X for room, Y for Room, Z for Corridor/Vent
-var RandyPosition := Vector3i(1, 1, 0)
+# X for Floor, Y for Room, Z for Corridor/Vent
+var RandyPosition := Vector3i(2, 1, 0)
 var RandyCooldown := 0
 var RandyVentID := -1
 var RandyCorridorID := 4
 
 var DayTimer := 0.0
 var MaxDayTimer := 480.0
+var IsDwukropek := true
+var TimerLabelContents := "23:30"
+var LastTimerState := 480
+var TimerTimer := 1.0
 
 var DayStarted := false
-
+var RealProgress := 0
+var PreviousRealProgress := 0
+var IsTutorial := false
+var TutorialProgress := 0
+var IsPlaying := false
 func _process(delta: float) -> void:
-	if MaxDayTimer < DayTimer:
+	if GlobalVar.IsEndless and GlobalVar.IsStoryMode and not IsTutorial:
+			TutorialProcessing(0)
+			IsTutorial = true
+	if MaxDayTimer < DayTimer and not GlobalVar.IsEndless:
 		DayStarted = false
 		EndOfDayProcessing()
 		DayTimer = 0
-	if DayStarted:
+	if DayStarted and not IsTutorial:
+		if GlobalVar.IsDoorClosed:
+			DoorTimer += delta
+		elif DoorTimer > 0:
+			DoorTimer -= delta * 5
+		elif DoorTimer < 0:
+			DoorTimer = 0
 		
 		BBGTimer -= delta
-		EtherTimer -= delta
+		
+		if EtherPosition == 0 and DoorTimer < 1.5 and GlobalVar.IsDoorClosed:
+			EtherTimer -= delta / 5
+		else:
+			EtherTimer -= delta
+		
 		AnalougeTimer -= delta
 		ServoTimer -= delta
 		RandyTimer -= delta
@@ -76,6 +103,8 @@ func _process(delta: float) -> void:
 			pass
 		else:
 			DayTimer += delta
+			TimerTimer -= delta
+			ClockProcessing()
 		BBGprocessing()
 		
 		if GlobalVar.AnalougeAI != 0:
@@ -86,15 +115,88 @@ func _process(delta: float) -> void:
 		if GlobalVar.RandyAI != 0:
 			Randyprocessing()
 		CameraUpdater()
-		if GlobalVar.VentDecontamination:
+		
+	if IsTutorial and not IsPlaying:
+		match TutorialProgress:
+			1:
+				if GlobalVar.IsCameraOn == GlobalVar.Cam:
+					TutorialProcessing(1)
+			2:
+				if GlobalVar.CurrentCam == 11:
+					TutorialProcessing(2)
+			3:
+				if GlobalVar.TripwireID != -9:
+					TutorialProcessing(3)
+				elif GlobalVar.VentDecontID != 0:
+					TutorialProcessing(-1)
+			-1:
+				if GlobalVar.TripwireID != -9:
+					TutorialProcessing(3)
+			4:
+				if GlobalVar.DeconTimeout:
+					TutorialProcessing(4)
+			5: 
+				if GlobalVar.IsCameraOn == GlobalVar.NoCam:
+					TutorialProcessing(5)
+			6:
+				if GlobalVar.IsDoorClosed:
+					TutorialProcessing(6)
+			
+	if GlobalVar.VentDecontamination:
 			GlobalVar.VentDecontamination = false
 			if IsDeconSuccess:
 				$SFX/DeconSuccess.play()
 				IsDeconSuccess = false
 			else:
 				$SFX/DeconFail.play()
-		
-
+func TutorialProcessing(progress: int):
+	if TranslationServer.get_locale() == "pl":
+		var Tutorial0 = $"TutorialSFX/Polski/0"
+		var Tutorial1 = $"TutorialSFX/Polski/1"
+		var Tutorial2 = $"TutorialSFX/Polski/2"
+		var Tutorial3 = $"TutorialSFX/Polski/3"
+		var Tutorial3Fail = $"TutorialSFX/Polski/3Fail"
+		var Tutorial4 = $"TutorialSFX/Polski/4"
+		var Tutorial5 = $"TutorialSFX/Polski/5"
+		var Tutorial6 = $"TutorialSFX/Polski/6"
+		var Tutorial7 = $"TutorialSFX/Polski/7"
+		IsPlaying = true
+		if progress == 0:
+			await get_tree().create_timer(rng.randf_range(6, 10)).timeout
+			Tutorial0.play()
+			await get_tree().create_timer(rng.randf_range(6, 10)).timeout
+			Tutorial1.play()
+			await Tutorial1.finished
+			TutorialProgress = 1
+		if progress == 1:
+			Tutorial2.play()
+			await Tutorial2.finished
+			TutorialProgress = 2
+		if progress == 2:
+			Tutorial3.play()
+			await Tutorial3.finished
+			TutorialProgress = 3
+		if progress == 3:
+			Tutorial4.play()
+			await Tutorial4.finished
+			TutorialProgress = 4
+		if progress == -1:
+			Tutorial3Fail.play()
+			TutorialProgress = -1
+			await Tutorial3Fail.finished
+		if progress == 4:
+			Tutorial5.play()
+			TutorialProgress = 5
+			await Tutorial5.finished
+		if progress == 5:
+			Tutorial6.play()
+			TutorialProgress = 6
+			await Tutorial6.finished
+		if progress == 6:
+			Tutorial7.play()
+			await get_tree().create_timer(rng.randf_range(6, 10)).timeout
+			EndOfDayProcessing()
+		IsPlaying = false
 func BBGprocessing():
 	pass
 
@@ -220,7 +322,6 @@ func Randyprocessing():
 		DidJustSwitch = true
 		RandyCorridorID = 3 + RandyPosition.x
 		RandyVentID = -1
-		print(RandyPosition)
 	if RandyTimer < 0 or RandyVentID == GlobalVar.TripwireID:
 		if RandyVentID == GlobalVar.TripwireID:
 			TripwireSFX.play()
@@ -263,7 +364,6 @@ func Randyprocessing():
 						
 				else:
 					RandyPosition.y = abs(RandyPosition.y - 1)
-		print(RandyPosition)
 
 
 	if RandyPosition.z == 1:
@@ -442,3 +542,42 @@ func updateCam(Which: int, Value: int):
 
 func EndOfDayProcessing():
 	DayFinished.emit()
+
+func ClockProcessing():
+	var MinutesToAdd = floor(480 * (DayTimer / MaxDayTimer))
+	if TimerTimer <= 0:
+		TimerTimer = 1
+		IsDwukropek = not IsDwukropek
+		if IsDwukropek:
+			Timelabel.text = Timelabel.text.replace(" ", ":")
+		else:
+			Timelabel.text = Timelabel.text.replace(":", " ")
+	if MinutesToAdd != LastTimerState:
+		LastTimerState = MinutesToAdd
+		var Hours: int = floor((MinutesToAdd + 30) / 60)
+		var Minutes: int = floor(fmod((MinutesToAdd + 30), 60))
+		var StringNeeded
+		if Hours == 0:
+			if Minutes >= 10:
+				if IsDwukropek:
+					StringNeeded = "23:" + str(Minutes)
+				else:
+					StringNeeded = "23 " + str(Minutes)
+			else:
+				if IsDwukropek:
+					StringNeeded = "23:0" + str(Minutes)
+				else:
+					StringNeeded = "23 0" + str(Minutes)
+		else:
+			Hours -= 1
+			if Minutes >= 10:
+				if IsDwukropek:
+					StringNeeded = str(Hours) + ":" + str(Minutes)
+				else:
+					StringNeeded = str(Hours) + " " + str(Minutes)
+			else:
+				if IsDwukropek:
+					StringNeeded = str(Hours) + ":0" + str(Minutes)
+				else:
+					StringNeeded = str(Hours) + " 0" + str(Minutes)
+		Timelabel.text = StringNeeded

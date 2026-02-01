@@ -3,22 +3,65 @@ signal SetupReady
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	match SaveData.Contents.currentNight:
-		0:
-			$"../Label".text = "NIGHT_0"
-		1:
-			$"../Label".text = "NIGHT_1"
-		2:
-			$"../Label".text = "NIGHT_2"
-		3:
-			$"../Label".text = "NIGHT_3"
-		4:
-			$"../Label".text = "NIGHT_4"
-		5:
-			$"../Label".text = "NIGHT_5"
-		6:
-			$"../Label".text = "NIGHT_6"
-
+	if GlobalVar.IsStoryMode == true:
+		match SaveData.Contents.currentNight:
+			0:
+				$"../Label".text = "NIGHT_0"
+				GlobalVar.BbgAI = 0
+				GlobalVar.EtherAi = 0
+				GlobalVar.ServoAI = 0 
+				GlobalVar.AnalougeAI = 0
+				GlobalVar.RandyAI = 0
+				GlobalVar.IsEndless = true
+			1:
+				$"../Label".text = "NIGHT_1"
+				GlobalVar.BbgAI = 1
+				GlobalVar.EtherAi = 3
+				GlobalVar.ServoAI = 0 
+				GlobalVar.AnalougeAI = 0
+				GlobalVar.RandyAI = 0
+				GlobalVar.IsEndless = false
+				GlobalVar.DayMultiplier = 1
+			2:
+				$"../Label".text = "NIGHT_2"
+				GlobalVar.BbgAI = 2
+				GlobalVar.EtherAi = 5
+				GlobalVar.ServoAI = 0 
+				GlobalVar.AnalougeAI = 3
+				GlobalVar.RandyAI = 0
+				GlobalVar.IsEndless = false
+				GlobalVar.DayMultiplier = 1
+			3:
+				$"../Label".text = "NIGHT_3"
+				GlobalVar.BbgAI = 3
+				GlobalVar.EtherAi = 7
+				GlobalVar.ServoAI = 3 
+				GlobalVar.AnalougeAI = 5
+				GlobalVar.RandyAI = 0
+				GlobalVar.IsEndless = false
+				GlobalVar.DayMultiplier = 1
+			4:
+				$"../Label".text = "NIGHT_4"
+				GlobalVar.BbgAI = 4
+				GlobalVar.EtherAi = 10
+				GlobalVar.ServoAI = 5 
+				GlobalVar.AnalougeAI = 7
+				GlobalVar.RandyAI = 3
+				GlobalVar.IsEndless = false
+				GlobalVar.DayMultiplier = 1
+			5:
+				$"../Label".text = "NIGHT_5"
+				GlobalVar.BbgAI = 5
+				GlobalVar.EtherAi = 10
+				GlobalVar.ServoAI = 7 
+				GlobalVar.AnalougeAI = 10
+				GlobalVar.RandyAI = 5
+				GlobalVar.IsEndless = false
+				GlobalVar.DayMultiplier = 1.5
+			6:
+				$"../Label".text = "NIGHT_6"
+	else:
+		$"../Label".text = "NIGHT_6"
 	
 	await get_tree().create_timer(5).timeout
 	for I in 300:

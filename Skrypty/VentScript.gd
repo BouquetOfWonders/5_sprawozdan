@@ -3,7 +3,7 @@ extends Button
 var Root = $"."
 var PressedFor := 0.0
 var ShouldLetGo := false
-
+var rng = RandomNumberGenerator.new()
 var RedStylebox
 
 func _ready() -> void:
@@ -36,5 +36,7 @@ func _process(delta: float) -> void:
 	elif PressedFor > 0 and not ShouldLetGo:
 		PressedFor = 0
 		GlobalVar.TripwireID = int(Root.name)
+		$"../Tripwireputdown".pitch_scale = rng.randf_range(0.9, 1.1)
+		$"../Tripwireputdown".play()
 	elif ShouldLetGo:
 		ShouldLetGo = false
