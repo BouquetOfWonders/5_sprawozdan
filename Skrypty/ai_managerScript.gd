@@ -1,6 +1,6 @@
 extends Node
 
-signal DayFinished 
+signal DayFinished(DidSucceed)
 
 var rng = RandomNumberGenerator.new()
 @onready
@@ -149,8 +149,10 @@ func _process(delta: float) -> void:
 				IsDeconSuccess = false
 			else:
 				$SFX/DeconFail.play()
+
 func TutorialProcessing(progress: int):
 	if TranslationServer.get_locale() == "pl":
+	
 		var Tutorial0 = $"TutorialSFX/Polski/0"
 		var Tutorial1 = $"TutorialSFX/Polski/1"
 		var Tutorial2 = $"TutorialSFX/Polski/2"
@@ -194,6 +196,45 @@ func TutorialProcessing(progress: int):
 			await Tutorial6.finished
 		if progress == 6:
 			Tutorial7.play()
+			await get_tree().create_timer(rng.randf_range(6, 10)).timeout
+			EndOfDayProcessing()
+		IsPlaying = false
+	elif TranslationServer.get_locale() == "en":
+		var Tutorial1 = $"TutorialSFX/English/1"
+		var Tutorial2 = $"TutorialSFX/English/2"
+		var Tutorial3 = $"TutorialSFX/English/3"
+		var Tutorial3Fail = $"TutorialSFX/English/3Fail"
+		var Tutorial4 = $"TutorialSFX/English/4"
+		var Tutorial5 = $"TutorialSFX/English/5"
+		var Tutorial6 = $"TutorialSFX/English/6"
+		IsPlaying = true
+		if progress == 0:
+			await get_tree().create_timer(rng.randf_range(6, 10)).timeout
+			Tutorial1.play()
+			await Tutorial1.finished
+			TutorialProgress = 1
+		if progress == 1:
+			Tutorial2.play()
+			await Tutorial2.finished
+			TutorialProgress = 2
+		if progress == 2:
+			Tutorial3.play()
+			await Tutorial3.finished
+			TutorialProgress = 3
+		if progress == 3:
+			Tutorial4.play()
+			await Tutorial4.finished
+			TutorialProgress = 4
+		if progress == -1:
+			Tutorial3Fail.play()
+			TutorialProgress = -1
+			await Tutorial3Fail.finished
+		if progress == 4:
+			Tutorial5.play()
+			TutorialProgress = 6
+			await Tutorial5.finished
+		if progress == 6:
+			Tutorial6.play()
 			await get_tree().create_timer(rng.randf_range(6, 10)).timeout
 			EndOfDayProcessing()
 		IsPlaying = false
@@ -504,6 +545,9 @@ func JumpscareHandler(WhichAnimatronic: int):
 		GlobalVar.CamUpdate = true
 		SwitchCamSFX.pitch_scale = rng.randf_range(0.9, 1.1)
 		SwitchCamSFX.play()
+	GlobalVar.CanCameraMove = false
+	$Control.visible = true
+	await get_tree().create_timer(rng.randf_range(3, 10)).timeout
 	match WhichAnimatronic:
 		1:
 			pass
@@ -513,8 +557,10 @@ func JumpscareHandler(WhichAnimatronic: int):
 			pass
 		4:
 			pass
-	GlobalVar.CanCameraMove = false
-	$Control.visible = true
+	
+	
+	DayFinished.emit(false)
+	
 	
 
 func _on_black_screen_setup_ready() -> void:
@@ -541,7 +587,7 @@ func updateCam(Which: int, Value: int):
 						GlobalVar.CamUpdate = true
 
 func EndOfDayProcessing():
-	DayFinished.emit()
+	DayFinished.emit(true)
 
 func ClockProcessing():
 	var MinutesToAdd = floor(480 * (DayTimer / MaxDayTimer))

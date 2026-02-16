@@ -9,7 +9,7 @@ static var Defaults: Dictionary = {
 	"SoundEffects": linear_to_db(1),
 	
 	"currentNight": 0,
-	"isCNunlocked": true,
+	"isCNunlocked": false,
 	
 	"etherCounter": 0,
 	"analougeCounter": 0,

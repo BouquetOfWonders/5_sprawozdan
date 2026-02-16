@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://4k6gb8wlqtun"]
+[gd_scene load_steps=69 format=3 uid="uid://4k6gb8wlqtun"]
 
 [ext_resource type="Script" uid="uid://cmnvgjlv6hrnr" path="res://Skrypty/kamera.gd" id="1_7nput"]
 [ext_resource type="Texture2D" uid="uid://dp258g2kicjg5" path="res://assets/Rooms/MonitoringRoom/0.png" id="1_tfmsj"]
@@ -50,6 +50,13 @@
 [ext_resource type="AudioStream" uid="uid://dnwgq2vq0t56h" path="res://assets/VoiceOvers/Tutorial/Polish/5.mp3" id="47_4stpm"]
 [ext_resource type="AudioStream" uid="uid://bj8xmelnwndfg" path="res://assets/VoiceOvers/Tutorial/Polish/6.mp3" id="48_fyx5m"]
 [ext_resource type="AudioStream" uid="uid://cqtym3fjb13yi" path="res://assets/VoiceOvers/Tutorial/Polish/7.mp3" id="49_75j0l"]
+[ext_resource type="AudioStream" uid="uid://bnsakue835n3c" path="res://assets/VoiceOvers/Tutorial/English/1.mp3" id="51_hub26"]
+[ext_resource type="AudioStream" uid="uid://bgpgx43l6qq4x" path="res://assets/VoiceOvers/Tutorial/English/2.mp3" id="52_vnxc6"]
+[ext_resource type="AudioStream" uid="uid://p31w7m56hj0s" path="res://assets/VoiceOvers/Tutorial/English/3.mp3" id="53_v3l6w"]
+[ext_resource type="AudioStream" uid="uid://d0y5p87mm82yn" path="res://assets/VoiceOvers/Tutorial/English/3fail.mp3" id="54_1hl2o"]
+[ext_resource type="AudioStream" uid="uid://bqpgj58b3r6nd" path="res://assets/VoiceOvers/Tutorial/English/4.mp3" id="55_iynnn"]
+[ext_resource type="AudioStream" uid="uid://8y851jldu0h5" path="res://assets/VoiceOvers/Tutorial/English/5.mp3" id="56_48t7g"]
+[ext_resource type="AudioStream" uid="uid://b0bx4n4qpkihk" path="res://assets/VoiceOvers/Tutorial/English/6.mp3" id="57_sy38i"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_odu1o"]
 animations = [{
@@ -397,6 +404,29 @@ bus = &"SoundEffects"
 [node name="7" type="AudioStreamPlayer" parent="AI manager/TutorialSFX/Polski"]
 stream = ExtResource("49_75j0l")
 bus = &"SoundEffects"
+
+[node name="English" type="Node" parent="AI manager/TutorialSFX"]
+
+[node name="1" type="AudioStreamPlayer" parent="AI manager/TutorialSFX/English"]
+stream = ExtResource("51_hub26")
+
+[node name="2" type="AudioStreamPlayer" parent="AI manager/TutorialSFX/English"]
+stream = ExtResource("52_vnxc6")
+
+[node name="3" type="AudioStreamPlayer" parent="AI manager/TutorialSFX/English"]
+stream = ExtResource("53_v3l6w")
+
+[node name="3Fail" type="AudioStreamPlayer" parent="AI manager/TutorialSFX/English"]
+stream = ExtResource("54_1hl2o")
+
+[node name="4" type="AudioStreamPlayer" parent="AI manager/TutorialSFX/English"]
+stream = ExtResource("55_iynnn")
+
+[node name="5" type="AudioStreamPlayer" parent="AI manager/TutorialSFX/English"]
+stream = ExtResource("56_48t7g")
+
+[node name="6" type="AudioStreamPlayer" parent="AI manager/TutorialSFX/English"]
+stream = ExtResource("57_sy38i")
 
 [connection signal="button_down" from="MonitorButton" to="MonitorButton" method="_on_button_down"]
 [connection signal="button_down" from="DoorButton" to="DoorButton" method="_on_button_down"]

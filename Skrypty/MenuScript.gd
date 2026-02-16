@@ -25,6 +25,8 @@ func _on_continue_button_down() -> void:
 func _on_options_button_down() -> void:
 	$MainMenu.visible = false
 	$OptionsMenu.visible = true
+	$Logo.visible = false
+	$ProductLogoTransparent.visible = false
 	Audio.play()
 
 
@@ -43,6 +45,8 @@ func _on_go_back_button_down() -> void:
 	$MainMenu.visible = true
 	$OptionsMenu.visible = false
 	$CustomNightMenu.visible = false
+	$Logo.visible = true
+	$ProductLogoTransparent.visible = true
 	Audio.play()
 
 
@@ -60,8 +64,11 @@ func _on_language_pressed() -> void:
 
 func _on_new_cn_game_button_down() -> void:
 	Audio.play()
-	GlobalVar.IsStoryMode = false
-
+	$MainMenu.visible = false
+	$OptionsMenu.visible = false
+	$CustomNightMenu.visible = true
+	$Logo.visible = false
+	$ProductLogoTransparent.visible = false
 
 
 func _on_start_button_down() -> void:
@@ -71,4 +78,5 @@ func _on_start_button_down() -> void:
 	GlobalVar.AnalougeAI = $CustomNightMenu/AnalougeLevel.value
 	GlobalVar.RandyAI = $CustomNightMenu/RandyLevel.value
 	GlobalVar.IsStoryMode = false
+	GlobalVar.DayMultiplier = $CustomNightMenu/DayMult.value
 	get_tree().change_scene_to_file("res://Sceny/gameplay.tscn")

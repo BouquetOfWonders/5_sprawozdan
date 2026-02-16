@@ -76,7 +76,7 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
-func _on_ai_manager_day_finished() -> void:
+func _on_ai_manager_day_finished(DidSucceed: bool) -> void:
 	$".".visible = true
 	GlobalVar.CanCameraMove = false
 	if GlobalVar.IsCameraOn != GlobalVar.NoCam:
@@ -85,16 +85,21 @@ func _on_ai_manager_day_finished() -> void:
 		$"../CamEnterExitEffect".play()
 	$"../Camera2D".position = Vector2(0, 0)
 	await get_tree().create_timer(0.75).timeout
-	
-	$WestministerChimes.play()
-	for I in 1200:
-		$".".self_modulate = Color(1, 1, 1, 1 - float(1200-I)/1200)
-		await get_tree().process_frame
-	await $WestministerChimes.finished
-	if GlobalVar.IsStoryMode:
-		SaveData.Contents.currentNight = SaveData.Contents.currentNight + 1
-		if SaveData.Contents.currentNight == 6:
-			SaveData.Contents.currentNight = 0
-			SaveData.Contents.isCNunlocked = true
-	SaveData._save()
-	get_tree().change_scene_to_file("res://Sceny/Menu.tscn")
+	if DidSucceed:
+		$WestministerChimes.play()
+		for I in 1200:
+			$".".self_modulate = Color(1, 1, 1, 1 - float(1200-I)/1200)
+			await get_tree().process_frame
+		await $WestministerChimes.finished
+		if GlobalVar.IsStoryMode:
+			SaveData.Contents.currentNight = SaveData.Contents.currentNight + 1
+			if SaveData.Contents.currentNight == 6:
+				SaveData.Contents.currentNight = 0
+				SaveData.Contents.isCNunlocked = true
+			SaveData._save()
+		get_tree().change_scene_to_file("res://Sceny/Menu.tscn")
+	else:
+		for I in 100:
+			$".".self_modulate = Color(0.345, 0.0, 0.0, 1 - float(100-I)/100 )
+			await get_tree().process_frame
+		get_tree().change_scene_to_file("res://Sceny/Menu.tscn")
